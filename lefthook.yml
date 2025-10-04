@@ -3,3 +3,6 @@ pre-commit:
     check:
       run: pnpm lint --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
       stage_fixed: true
+
+    test:
+      run: pnpm test
