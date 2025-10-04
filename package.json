@@ -1,5 +1,5 @@
 {
-	"name": "pdd-mod",
+	"name": "alimama-mod",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -24,6 +24,7 @@
 		"vue-tsc": "^3.0.6"
 	},
 	"dependencies": {
+		"date-fns": "^4.1.0",
 		"radash": "^12.1.1"
 	}
 }

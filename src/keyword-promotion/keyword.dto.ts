@@ -111,3 +111,43 @@ export const getHalfMonthDataSummary = () => {
 export const getRealTimeDataSummary = () => {
 	return computeDataSummary(getRealTimeData());
 };
+
+/**
+ * 根据筛选日期和是否汇总返回不同的处理函数
+ */
+export function getDataHandler(
+	diffDays: 1,
+	splitType: "sum" | "hour",
+): (() => void) | undefined;
+export function getDataHandler(
+	diffDays: 7 | 15,
+	splitType: "sum" | "day",
+): (() => void) | undefined;
+// 函数实现
+export function getDataHandler(
+	diffDays: 1 | 7 | 15,
+	splitType: "sum" | "day" | "hour",
+) {
+	const dataHandlerMap = {
+		1: {
+			sum: getRealTimeDataSummary,
+			hour: getRealTimeData,
+		},
+		7: {
+			sum: getWeekDataSummary,
+			day: getLastWeekData,
+		},
+		15: {
+			sum: getHalfMonthDataSummary,
+			day: getHalfMonthData,
+		},
+	};
+
+	// 先检查diffDays是否存在
+	const dayHandlers = dataHandlerMap[diffDays];
+	if (!dayHandlers) return undefined;
+
+	// 再检查splitType是否存在
+	const handler = dayHandlers[splitType as keyof typeof dayHandlers];
+	return handler;
+}
