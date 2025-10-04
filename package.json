@@ -19,6 +19,10 @@
 		"typescript": "^5.9.3",
 		"vite": "^7.1.2",
 		"vite-plugin-monkey": "^7.1.1",
+		"vitest": "^3.2.4",
 		"vue-tsc": "^3.0.6"
+	},
+	"dependencies": {
+		"radash": "^12.1.1"
 	}
 }

@@ -1,3 +1,5 @@
+import type { Simplify } from "type-fest";
+
 /**
  * 关键词推广数据
  */
@@ -24,3 +26,4 @@ export interface KeywordData {
 	special_campaign_filter: number;
 	memberId: number;
 }
+export type KeyField = Simplify<keyof KeywordData>;
