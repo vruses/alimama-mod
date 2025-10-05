@@ -145,7 +145,7 @@ export function getDataHandler(
 
 	// 先检查diffDays是否存在
 	const dayHandlers = dataHandlerMap[diffDays];
-	if (!dayHandlers) return undefined;
+	if (!dayHandlers) throw new Error("无对应函数");
 
 	// 再检查splitType是否存在
 	const handler = dayHandlers[splitType as keyof typeof dayHandlers];
