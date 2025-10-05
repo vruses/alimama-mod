@@ -44,7 +44,7 @@ ajaxHooker.hook((request) => {
 				}
 			}
 			// 是否缺少数据?
-			// 缺少数据:是否一条数据都没有：没有不能进行复制增量更新，进行全覆盖
+			// 缺少数据:是否一条数据都没有：没有不能进行复制增量更新
 			// 是否为sum，是否为day
 			// 有day的话有日期
 			// sum类型响应数组里只有一条数据
@@ -76,15 +76,15 @@ ajaxHooker.hook((request) => {
 				};
 				const dataLength = result.data.list.length;
 
-				if (diffDays === 7) {
+				if (diffDays === 7 || diffDays === 15) {
 					// 顺序：0-n，n为昨天
-					data = getLastWeekData();
+					data = diffDays === 7 ? getLastWeekData() : getHalfMonthData();
 					// 添加thedate属性后返回
 					const dataWithDate = getDataWithDate(data);
-					// 数据为7时按日期顺序替换
+					// 数据长度最大时只需按日期顺序替换
 					// 响应里0-6依次为昨日到6天前
 					if (dataLength !== 0) {
-						if (dataLength < 7 && dataLength > 0) {
+						if (dataLength < diffDays && dataLength > 0) {
 							// 缺少数据时,先复制第一份数据进行补齐，然后将时间及其它数据统一替换
 							// 深拷贝第一个元素作为填充模板
 							const first = JSON.stringify(result.data.list[0]);
@@ -106,6 +106,7 @@ ajaxHooker.hook((request) => {
 						result.data.list = dataWithDate;
 					}
 				}
+				res.responseText = JSON.stringify(result);
 			}
 		};
 	}
