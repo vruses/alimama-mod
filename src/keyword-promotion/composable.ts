@@ -3,9 +3,9 @@ import {
 	getHalfMonthData,
 	getHalfMonthDataSummary,
 	getLastWeekData,
-	// getRealTimeData,
-	// getRealTimeDataSummary,
+	getRealTimeDataSummary,
 	getWeekDataSummary,
+	getYeasterdayDataSummary,
 } from "@/keyword-promotion/keyword.dto";
 import type { KeywordData } from "@/keyword-promotion/type";
 import ajaxHooker, { type XhrResponse } from "@/utils/ajaxHooker";
@@ -17,10 +17,13 @@ ajaxHooker.hook((request) => {
 			startTime: string;
 			endTime: string;
 			splitType: "sum" | "day" | "hour";
+			// 区分实时和昨日数据
+			fromRealTime: boolean;
 		};
 		const diffDays =
 			differenceInDays(new Date(payload.endTime), new Date(payload.startTime)) +
 			1;
+		const fromRealTime = payload.fromRealTime;
 		const today = new Date();
 		// data数据按时间正序从最早到最近排序，添加"2025-10-02"格式的thedate属性
 		const getDataWithDate = (data: Partial<KeywordData>[]) => {
@@ -52,6 +55,11 @@ ajaxHooker.hook((request) => {
 				let dataSummary: Partial<KeywordData> = {};
 				const result = JSON.parse(res.responseText);
 
+				if (diffDays === 1) {
+					dataSummary = fromRealTime
+						? getRealTimeDataSummary()
+						: getYeasterdayDataSummary();
+				}
 				if (diffDays === 7) {
 					dataSummary = getWeekDataSummary();
 				}
@@ -107,6 +115,7 @@ ajaxHooker.hook((request) => {
 					}
 				}
 				res.responseText = JSON.stringify(result);
+			} else if (splitType === "hour") {
 			}
 		};
 	}

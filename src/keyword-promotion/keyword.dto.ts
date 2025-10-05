@@ -113,6 +113,13 @@ export const getRealTimeDataSummary = () => {
 };
 
 /**
+ * 获取昨日的综合数据，即7日或14日曲线数据的最后一条
+ */
+export const getYeasterdayDataSummary = () => {
+	const data = getLastWeekData();
+	return data[data.length - 1];
+};
+/**
  * 根据筛选日期和是否汇总返回不同的处理函数
  */
 export function getDataHandler(
