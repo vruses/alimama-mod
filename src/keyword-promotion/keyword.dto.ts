@@ -1,5 +1,5 @@
 import { zipToObject } from "radash";
-import { keyFieldMap, keyFieldMapRT } from "@/constants";
+import { keyFieldMap, keyFieldMapRT, keyFieldMapYT } from "@/constants";
 import type { KeyField, KeywordData } from "@/keyword-promotion/type";
 
 /**
@@ -58,7 +58,16 @@ export const getHalfMonthData = () => {
  * 获取今日数据,动态给出实时的数据0h-now
  */
 export const getRealTimeData = () => {
-	return getKeywordDataList(keyFieldMapRT);
+	// 获取当前小时（0-23）实时返回对应长度数据
+	const currentHour = new Date().getHours();
+	return getKeywordDataList(keyFieldMapRT).slice(0, currentHour);
+};
+
+/**
+ * 获取昨日数据,动态给出实时的数据0h-now
+ */
+export const getYesterdayData = () => {
+	return getKeywordDataList(keyFieldMapYT);
 };
 
 /**
@@ -113,12 +122,12 @@ export const getRealTimeDataSummary = () => {
 };
 
 /**
- * 获取昨日的综合数据，即7日或14日曲线数据的最后一条
+ * 获取昨日的综合数据，通过昨日曲线数据计算
  */
-export const getYeasterdayDataSummary = () => {
-	const data = getLastWeekData();
-	return data[data.length - 1];
+export const getYesterdayDataSummary = () => {
+	return computeDataSummary(getYesterdayData());
 };
+
 /**
  * 根据筛选日期和是否汇总返回不同的处理函数
  */
