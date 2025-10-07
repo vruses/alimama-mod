@@ -26,7 +26,7 @@ ajaxHooker.hook((request) => {
 			differenceInDays(new Date(payload.endTime), new Date(payload.startTime)) +
 			1;
 		const fromRealTime = payload.fromRealTime;
-		const today = new Date();
+		const yesterday = subDays(new Date(), 1);
 		// data数据按时间正序从最早到最近排序，添加"2025-10-02"格式的thedate属性
 		const getDataWithDate = (
 			data: Partial<KeywordData>[],
@@ -47,7 +47,7 @@ ajaxHooker.hook((request) => {
 						};
 					})
 				: data.map((value, index) => {
-						const currentDate = subDays(today, diffDays - index - 1);
+						const currentDate = subDays(yesterday, diffDays - index - 1);
 						const thedate = format(currentDate, "yyyy-MM-dd");
 
 						return {
@@ -150,6 +150,7 @@ ajaxHooker.hook((request) => {
 						});
 					} // 一条数据没有直接全部替换，此时不用考虑顺序问题
 					else if (dataLength === 0) {
+						console.log(dataWithDate);
 						result.data.list = dataWithDate;
 					}
 				}
