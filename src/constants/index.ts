@@ -8,7 +8,6 @@ import type { Entries } from "type-fest";
  */
 export const adPreview = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 export const click = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-export const charge = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 export const ctr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 export const ecpc = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 export const payAmt = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
@@ -22,10 +21,6 @@ export const adPreviewRT = [
 	3, 2, 1,
 ];
 export const clickRT = [
-	24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4,
-	3, 2, 1,
-];
-export const chargeRT = [
 	24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4,
 	3, 2, 1,
 ];
@@ -51,10 +46,6 @@ export const adPreviewYT = [
 	23, 24,
 ];
 export const clickYT = [
-	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-	23, 24,
-];
-export const chargeYT = [
 	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
 	23, 24,
 ];
@@ -89,6 +80,15 @@ export const keyFieldIn = [
 	"colNum",
 	"itemColInshopCost",
 ];
+
+/**
+ * 推广花费应该为点击量*平均点击花费
+ */
+export const computeCharge = (click: number[], ecpc: number[]) =>
+	click.map((value, index) => value * ecpc[index]);
+export const charge = computeCharge(click, ecpc);
+export const chargeRT = computeCharge(clickRT, ecpcRT);
+export const chargeYT = computeCharge(clickYT, ecpcYT);
 
 /**
  * 获取keyword属性与数据变量的映射关系
